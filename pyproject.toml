@@ -1,0 +1,6 @@
+[project]
+requires-python = ">=3.12,<3.15"
+
+[tool.vercel]
+entrypoint = "ai_solution.wsgi:application"
+

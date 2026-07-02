@@ -27,6 +27,17 @@ def env_list(name, default=None):
         return default or []
     return [item.strip() for item in raw_value.split(",") if item.strip()]
 
+
+def vercel_hostnames():
+    return [
+        value
+        for value in (
+            os.environ.get('VERCEL_URL'),
+            os.environ.get('VERCEL_PROJECT_PRODUCTION_URL'),
+        )
+        if value
+    ]
+
 # ──────────────────────────────────────────────
 # SECURITY  (never commit real SECRET_KEY to VCS)
 # ──────────────────────────────────────────────
@@ -36,10 +47,18 @@ SECRET_KEY = os.environ.get(
 )
 DEBUG = env_bool('DEBUG', True)
 DEFAULT_ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+if os.environ.get('VERCEL'):
+    DEFAULT_ALLOWED_HOSTS.append('.vercel.app')
+DEFAULT_ALLOWED_HOSTS.extend(vercel_hostnames())
 
 ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', DEFAULT_ALLOWED_HOSTS)
 
 CSRF_TRUSTED_ORIGINS = env_list('CSRF_TRUSTED_ORIGINS')
+if os.environ.get('VERCEL'):
+    CSRF_TRUSTED_ORIGINS.extend(
+        f'https://{host}' for host in vercel_hostnames()
+    )
+    CSRF_TRUSTED_ORIGINS.append('https://*.vercel.app')
 
 # ──────────────────────────────────────────────
 # APPLICATION DEFINITION

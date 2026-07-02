@@ -21,7 +21,7 @@ and customer queries.
 | Area       | Technology                              |
 | ---------- | --------------------------------------- |
 | Backend    | Python, Django 5.2                      |
-| Database   | SQLite                                  |
+| Database   | SQLite locally, PostgreSQL on Vercel    |
 | Frontend   | Django templates, HTML, CSS, JavaScript |
 | Images     | Pillow                                  |
 | AI chatbot | Google Gemini API                       |
@@ -50,8 +50,8 @@ db.sqlite3
 manage.py
 README.md
 requirements.txt
-Procfile
-runtime.txt
+pyproject.toml
+vercel.json
 ```
 
 ## Setup
@@ -220,6 +220,45 @@ The assistant is designed to answer questions about:
 The assistant should not claim it can directly access a visitor's website,
 systems, files, orders or private data.
 
+## Vercel Deployment
+
+This project is prepared for Vercel's Django/Python runtime. Vercel detects
+`manage.py` and uses the WSGI entrypoint configured in `pyproject.toml`:
+
+```text
+ai_solution.wsgi:application
+```
+
+Use a hosted PostgreSQL database for Vercel, such as Neon from the Vercel
+Marketplace. Do not use `db.sqlite3` for the deployed site because Vercel's
+serverless filesystem is not intended for persistent database writes.
+
+Set these environment variables in the Vercel project dashboard:
+
+```text
+SECRET_KEY
+DEBUG=False
+ALLOWED_HOSTS=.vercel.app,your-domain.com
+CSRF_TRUSTED_ORIGINS=https://*.vercel.app,https://your-domain.com
+DATABASE_URL
+GEMINI_API_KEY
+GEMINI_MODEL=gemini-2.5-flash-lite
+```
+
+After linking the Vercel project and database, pull the Vercel environment
+variables locally and run migrations against the hosted database:
+
+```cmd
+vercel link
+vercel env pull .env.local
+.\.venv\Scripts\python.exe manage.py migrate
+.\.venv\Scripts\python.exe manage.py createsuperuser
+```
+
+Vercel will run `collectstatic` during deployment because `STATIC_ROOT` is
+configured. Uploaded media files from the staff CRM are not persistent on
+Vercel; for production uploads, use Cloudinary, S3, or Vercel Blob.
+
 ## Preparing a Zip Submission
 
 Do not include generated or environment-specific folders in the zip.
@@ -242,10 +281,10 @@ core/
 media/
 db.sqlite3
 manage.py
-Procfile
 requirements.txt
 README.md
-runtime.txt
+pyproject.toml
+vercel.json
 ```
 
 Keep `db.sqlite3` if the marker should see the existing demo data and any
@@ -255,7 +294,7 @@ migrations and seed data from scratch.
 ## Notes
 
 - This project is configured for local development with `DEBUG = True`.
-- SQLite is used for convenience.
+- SQLite is used for local convenience. Vercel should use hosted PostgreSQL.
 - The Gemini API key should be supplied from the terminal and should not be
   committed into project files.
 - Public visitors do not need accounts; staff users manage content after login.
