@@ -1,0 +1,28 @@
+{% extends "core/staff/base_staff.html" %}
+{% block title %}Customer Query{% endblock %}
+
+{% block staff_content %}
+<div class="dashboard-topbar">
+  <div><p class="section-label">Customer Query</p><h1>{{ query.name }}</h1><p class="text-muted">{{ query.submitted_at|date:"d M Y, H:i" }}</p></div>
+  <div class="dashboard-actions"><a href="{% url 'staff_queries' %}" class="btn btn--outline btn--sm">Back to Queries</a></div>
+</div>
+<section class="dashboard-panel query-detail">
+  <div class="query-detail__grid">
+    <div><p class="section-label">Email</p><p>{{ query.email }}</p></div>
+    <div><p class="section-label">Phone</p><p>{{ query.phone|default:"-" }}</p></div>
+    <div><p class="section-label">Company</p><p>{{ query.company|default:"-" }}</p></div>
+    <div><p class="section-label">Country</p><p>{{ query.country }}</p></div>
+    <div><p class="section-label">Job title</p><p>{{ query.job_title }}</p></div>
+    <div><p class="section-label">Status</p><p>{% if query.is_read %}<span class="badge badge--read">Read</span>{% else %}<span class="badge badge--new">Unread</span>{% endif %}</p></div>
+  </div>
+  <div class="query-detail__message"><p class="section-label">Message</p><p>{{ query.job_details|linebreaksbr }}</p></div>
+  <div class="staff-form-actions">
+    {% if query.is_read %}
+    <form method="post" action="{% url 'staff_query_mark_unread' query.pk %}">{% csrf_token %}<button type="submit" class="btn btn--outline">Mark unread</button></form>
+    {% else %}
+    <form method="post" action="{% url 'staff_query_mark_read' query.pk %}">{% csrf_token %}<button type="submit" class="btn btn--primary">Mark read</button></form>
+    {% endif %}
+    <a href="{% url 'staff_query_delete' query.pk %}" class="btn btn--danger">Delete</a>
+  </div>
+</section>
+{% endblock %}

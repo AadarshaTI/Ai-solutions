@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+{% block title %}Feedback{% endblock %}
+{% block meta_description %}Customer feedback and ratings for AI Solutions workplace service projects.{% endblock %}
+
+{% block content %}
+<header class="page-hero">
+  <div class="container page-hero__inner">
+    <p class="section-label">Feedback</p>
+    <h1 class="page-hero__title">What customers say</h1>
+    <p class="page-hero__subtitle">Ratings and comments from organisations using AI Solutions to manage service requests and workplace workflows.</p>
+  </div>
+</header>
+
+<section id="customer-feedback" class="section section--alt" aria-labelledby="feedback-heading">
+  <div class="container">
+    <div class="section-header section-header--left">
+      <p class="section-label">Customer ratings</p>
+      <h2 class="section-title" id="feedback-heading">Feedback from delivery teams</h2>
+    </div>
+    <div class="grid-3">
+      {% if testimonials %}
+        {% for t in testimonials %}
+        <article class="testimonial-card">
+          <p class="testimonial-card__rating" aria-label="{{ t.rating }} out of 5 stars">
+            {% for _ in t.star_range %}<span aria-hidden="true">&#9733;</span>{% endfor %}
+            {% for _ in t.empty_star_range %}<span aria-hidden="true">&#9734;</span>{% endfor %}
+          </p>
+          <blockquote class="testimonial-card__quote">{{ t.quote }}</blockquote>
+          <p class="testimonial-card__name">{{ t.author_name }}</p>
+          <p class="testimonial-card__role">{{ t.author_title }}</p>
+        </article>
+        {% endfor %}
+      {% else %}
+        <article class="testimonial-card"><p class="testimonial-card__rating" aria-label="5 out of 5 stars"><span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span></p><blockquote class="testimonial-card__quote">"Our IT team now spends far less time on password and access queries. Staff know exactly where their request stands."</blockquote><p class="testimonial-card__name">Helen Ward</p><p class="testimonial-card__role">Service Manager, Northshore Health</p></article>
+        <article class="testimonial-card"><p class="testimonial-card__rating" aria-label="5 out of 5 stars"><span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span></p><blockquote class="testimonial-card__quote">"The rollout was calm and practical. Store colleagues adopted the new request process in the first fortnight."</blockquote><p class="testimonial-card__name">Malcolm Reed</p><p class="testimonial-card__role">Operations Director, Field &amp; Found</p></article>
+        <article class="testimonial-card"><p class="testimonial-card__rating" aria-label="5 out of 5 stars"><span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span></p><blockquote class="testimonial-card__quote">"Approval history is now visible in one place, which has made onboarding considerably easier to manage."</blockquote><p class="testimonial-card__name">Anita Rowe</p><p class="testimonial-card__role">People Lead, Tyne Ledger</p></article>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="closing-panel" aria-labelledby="feedback-cta-heading">
+  <div class="container closing-panel__inner">
+    <div><p class="section-label">Start a conversation</p><h2 id="feedback-cta-heading">Need a clearer way to manage staff requests?</h2></div>
+    <a href="{% url 'contact' %}" class="btn btn--primary btn--lg">Contact Us</a>
+  </div>
+</section>
+{% endblock %}

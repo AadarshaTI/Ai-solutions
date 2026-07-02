@@ -1,0 +1,41 @@
+{% extends "core/base.html" %}
+{% block title %}Highlights{% endblock %}
+{% block meta_description %}Examples of workplace service projects delivered by AI Solutions across several industries.{% endblock %}
+
+{% block content %}
+<header class="page-hero">
+  <div class="container page-hero__inner">
+    <p class="section-label">Highlights</p>
+    <h1 class="page-hero__title">Practical changes with visible results</h1>
+    <p class="page-hero__subtitle">A selection of request, onboarding and support projects.</p>
+  </div>
+</header>
+<section class="section">
+  <div class="container">
+    <div class="grid-2">
+      {% if case_studies %}
+        {% for study in case_studies %}
+        <article class="case-card">
+          <header class="case-card__header">
+            <p class="case-card__industry">{{ study.industry }}</p>
+            <h2 class="case-card__client">{{ study.client_name }}</h2>
+            {% if study.metric_value %}<p class="case-card__metric"><strong>{{ study.metric_value }}</strong> {{ study.metric_label }}</p>{% endif %}
+          </header>
+          <div class="case-card__body">
+            <h3>Brief</h3><p>{{ study.challenge }}</p>
+            <h3>Work</h3><p>{{ study.solution }}</p>
+            <h3>Result</h3><p>{{ study.outcome }}</p>
+          </div>
+        </article>
+        {% endfor %}
+      {% else %}
+        <article class="case-card"><header class="case-card__header"><p class="case-card__industry">Healthcare</p><h2 class="case-card__client">Northshore Health Trust</h2><p class="case-card__metric"><strong>38%</strong> fewer IT helpdesk calls</p></header><div class="case-card__body"><h3>Brief</h3><p>Repeated access and password requests were holding up a small support team.</p><h3>Work</h3><p>Introduced a staff help desk linked to their existing service management process.</p><h3>Result</h3><p>Routine requests were resolved in minutes and the team regained capacity for complex work.</p></div></article>
+        <article class="case-card"><header class="case-card__header"><p class="case-card__industry">Retail</p><h2 class="case-card__client">Field &amp; Found</h2><p class="case-card__metric"><strong>94%</strong> staff adoption</p></header><div class="case-card__body"><h3>Brief</h3><p>Store staff needed quicker access to rota and payroll information.</p><h3>Work</h3><p>Connected a people-services request channel with their existing HR platform.</p><h3>Result</h3><p>Requests moved away from shared inboxes and the HR team reduced weekly administration.</p></div></article>
+        <article class="case-card"><header class="case-card__header"><p class="case-card__industry">Financial services</p><h2 class="case-card__client">Tyne Ledger</h2><p class="case-card__metric"><strong>22 hours</strong> saved each week</p></header><div class="case-card__body"><h3>Brief</h3><p>New starter approvals took several weeks across four departments.</p><h3>Work</h3><p>Set up sequenced onboarding tasks with reminders and an audit history.</p><h3>Result</h3><p>Onboarding moved from three weeks to four working days.</p></div></article>
+        <article class="case-card"><header class="case-card__header"><p class="case-card__industry">Distribution</p><h2 class="case-card__client">Portline Distribution</h2><p class="case-card__metric"><strong>91%</strong> routine queries handled</p></header><div class="case-card__body"><h3>Brief</h3><p>Depot teams were spending too much time responding to shipment queries.</p><h3>Work</h3><p>Connected their tracking system to a customer and driver request channel.</p><h3>Result</h3><p>Support teams focused on exceptions while everyday status checks were handled immediately.</p></div></article>
+      {% endif %}
+    </div>
+  </div>
+</section>
+<section class="closing-panel"><div class="container closing-panel__inner"><h2>Have a process that needs attention?</h2><a href="{% url 'contact' %}" class="btn btn--primary">Arrange a call</a></div></section>
+{% endblock %}

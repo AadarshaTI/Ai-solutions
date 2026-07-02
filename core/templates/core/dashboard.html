@@ -1,0 +1,61 @@
+{% extends "core/base.html" %}
+{% block title %}Staff Dashboard{% endblock %}
+{% block chartjs %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+  <aside class="dashboard-sidebar" aria-label="Staff navigation">
+    <div class="dashboard-sidebar__logo"><a href="{% url 'home' %}" class="navbar__logo"><span class="navbar__logo-icon">AS</span><span>AI Solutions</span></a><p>Staff workspace</p></div>
+    <ul class="dashboard-sidebar__nav">
+      <li><a href="{% url 'dashboard' %}" class="active">Overview</a></li>
+      <li><a href="{% url 'admin:core_contactinquiry_changelist' %}">Queries</a></li>
+      <li><a href="{% url 'admin:core_solution_changelist' %}">Solutions</a></li>
+      <li><a href="{% url 'admin:core_casestudy_changelist' %}">Highlights</a></li>
+      <li><a href="{% url 'admin:core_testimonial_changelist' %}">Feedback</a></li>
+      <li><a href="{% url 'admin:core_article_changelist' %}">Articles</a></li>
+      <li><a href="{% url 'admin:core_galleryimage_changelist' %}">Photos</a></li>
+      <li><a href="{% url 'admin:core_promotionalevent_changelist' %}">Events</a></li>
+      <li><a href="{% url 'admin:core_chatmessage_changelist' %}">Messages</a></li>
+    </ul>
+    <div class="dashboard-user"><p>Signed in as</p><strong>{{ request.user.get_full_name|default:request.user.username }}</strong><a href="{% url 'staff_logout' %}" class="btn btn--outline btn--sm">Sign out</a></div>
+  </aside>
+  <main class="dashboard-main">
+    <div class="dashboard-topbar">
+      <div><p class="section-label">Overview</p><h1>Welcome, {{ request.user.first_name|default:request.user.username }}</h1><p class="text-muted">Current public queries and published content.</p></div>
+      <div class="dashboard-actions"><a href="{% url 'home' %}" class="btn btn--outline btn--sm" target="_blank">View site</a><a href="{% url 'admin:index' %}" class="btn btn--primary btn--sm">Admin</a></div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><p class="kpi-card__label">Queries</p><p class="kpi-card__value">{{ total_inquiries }}</p><p class="kpi-card__sub">All submissions</p></div>
+      <div class="kpi-card {% if unread_inquiries > 0 %}kpi-card--alert{% endif %}"><p class="kpi-card__label">Unread</p><p class="kpi-card__value">{{ unread_inquiries }}</p><p class="kpi-card__sub">Needs review</p></div>
+      <div class="kpi-card"><p class="kpi-card__label">Solutions</p><p class="kpi-card__value">{{ software_solutions_count }}</p><p class="kpi-card__sub">Managed</p></div>
+      <div class="kpi-card"><p class="kpi-card__label">Highlights</p><p class="kpi-card__value">{{ published_industry_highlights_count }}</p><p class="kpi-card__sub">Published</p></div>
+      <div class="kpi-card"><p class="kpi-card__label">Feedback</p><p class="kpi-card__value">{{ approved_customer_feedback_count }}</p><p class="kpi-card__sub">Approved</p></div>
+      <div class="kpi-card"><p class="kpi-card__label">Articles</p><p class="kpi-card__value">{{ published_company_articles_count }}</p><p class="kpi-card__sub">Published</p></div>
+      <div class="kpi-card"><p class="kpi-card__label">Photos</p><p class="kpi-card__value">{{ event_gallery_photos_count }}</p><p class="kpi-card__sub">In gallery</p></div>
+      <div class="kpi-card"><p class="kpi-card__label">Events</p><p class="kpi-card__value">{{ upcoming_events_count }}</p><p class="kpi-card__sub">Published</p></div>
+      <div class="kpi-card"><p class="kpi-card__label">Messages</p><p class="kpi-card__value">{{ chatbot_messages_count }}</p><p class="kpi-card__sub">Logged</p></div>
+    </div>
+    <section class="dashboard-panel">
+      <h2>Manage CRM content</h2>
+      <div class="grid-3">
+        <article class="card"><h3 class="card__title">Solutions</h3><p class="card__body">Maintain public solution descriptions.</p><a href="{% url 'admin:core_solution_changelist' %}" class="text-link">Manage</a></article>
+        <article class="card"><h3 class="card__title">Highlights</h3><p class="card__body">Manage published customer case studies.</p><a href="{% url 'admin:core_casestudy_changelist' %}" class="text-link">Manage</a></article>
+        <article class="card"><h3 class="card__title">Feedback</h3><p class="card__body">Approve testimonials and ratings.</p><a href="{% url 'admin:core_testimonial_changelist' %}" class="text-link">Manage</a></article>
+        <article class="card"><h3 class="card__title">Articles</h3><p class="card__body">Publish company news and articles.</p><a href="{% url 'admin:core_article_changelist' %}" class="text-link">Manage</a></article>
+        <article class="card"><h3 class="card__title">Photos</h3><p class="card__body">Maintain promotional event photo galleries.</p><a href="{% url 'admin:core_galleryimage_changelist' %}" class="text-link">Manage</a></article>
+        <article class="card"><h3 class="card__title">Events</h3><p class="card__body">Publish upcoming promotional events.</p><a href="{% url 'admin:core_promotionalevent_changelist' %}" class="text-link">Manage</a></article>
+        <article class="card"><h3 class="card__title">Queries</h3><p class="card__body">Review Contact Us form submissions.</p><a href="{% url 'admin:core_contactinquiry_changelist' %}" class="text-link">Manage</a></article>
+      </div>
+    </section>
+    <section class="dashboard-panel"><h2>Queries in the last seven days</h2><canvas id="inquiry-chart" data-labels='{{ chart_labels }}' data-values='{{ chart_data }}' height="100" aria-label="Queries over the last seven days" role="img"></canvas></section>
+    <section class="dashboard-panel">
+      <div class="panel-head"><h2>Recent queries</h2><a href="{% url 'admin:core_contactinquiry_changelist' %}" class="text-link">View all</a></div>
+      {% if recent_inquiries %}
+      <div class="table-wrap"><table class="inquiry-table"><thead><tr><th>Name</th><th>Company</th><th>Country</th><th>Job title</th><th>Submitted</th><th>Status</th><th>Action</th></tr></thead><tbody>
+        {% for inquiry in recent_inquiries %}<tr><td><strong>{{ inquiry.name }}</strong><small>{{ inquiry.email }}</small></td><td>{{ inquiry.company|default:"-" }}</td><td>{{ inquiry.country }}</td><td>{{ inquiry.job_title }}</td><td>{{ inquiry.submitted_at|date:"d M y, H:i" }}</td><td>{% if inquiry.is_read %}<span class="badge badge--read">Read</span>{% else %}<span class="badge badge--new">New</span>{% endif %}</td><td>{% if not inquiry.is_read %}<form method="post" action="{% url 'dashboard' %}">{% csrf_token %}<input type="hidden" name="mark_read" value="{{ inquiry.pk }}"><button type="submit" class="btn btn--outline btn--sm">Mark read</button></form>{% else %}Done{% endif %}</td></tr>{% endfor %}
+      </tbody></table></div>
+      {% else %}<p class="empty-state">No queries have been submitted yet.</p>{% endif %}
+    </section>
+  </main>
+</div>
+{% endblock %}

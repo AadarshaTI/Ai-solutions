@@ -1,0 +1,30 @@
+{% extends "core/staff/base_staff.html" %}
+{% block title %}Queries{% endblock %}
+
+{% block staff_content %}
+<div class="dashboard-topbar">
+  <div><p class="section-label">CRM</p><h1>Queries</h1><p class="text-muted">Customer queries submitted from the public Contact Us form.</p></div>
+</div>
+<section class="dashboard-panel">
+  {% if queries %}
+  <div class="table-wrap">
+    <table class="inquiry-table">
+      <thead><tr><th>Name</th><th>Company</th><th>Country</th><th>Job title</th><th>Submitted</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for query in queries %}
+        <tr>
+          <td><strong>{{ query.name }}</strong><small>{{ query.email }}</small></td>
+          <td>{{ query.company|default:"-" }}</td>
+          <td>{{ query.country }}</td>
+          <td>{{ query.job_title }}</td>
+          <td>{{ query.submitted_at|date:"d M y, H:i" }}</td>
+          <td>{% if query.is_read %}<span class="badge badge--read">Read</span>{% else %}<span class="badge badge--new">Unread</span>{% endif %}</td>
+          <td class="staff-table-actions"><a href="{% url 'staff_query_detail' query.pk %}" class="text-link">View</a><a href="{% url 'staff_query_delete' query.pk %}" class="text-link text-link--danger">Delete</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}<p class="empty-state">No queries have been submitted yet.</p>{% endif %}
+</section>
+{% endblock %}

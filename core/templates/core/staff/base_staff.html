@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Staff CRM{% endblock %} | AI Solutions CRM</title>
+  <link rel="stylesheet" href="{% static 'core/css/main.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+<div class="dashboard-layout">
+  <aside class="dashboard-sidebar" aria-label="Staff navigation">
+    <div class="dashboard-sidebar__logo">
+      <a href="{% url 'dashboard' %}" class="navbar__logo"><span class="navbar__logo-icon">AS</span><span>AI Solutions</span></a>
+      <p>Staff CRM</p>
+    </div>
+    <ul class="dashboard-sidebar__nav">
+      <li><a href="{% url 'dashboard' %}" class="{% if active_staff_nav == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+      <li><a href="{% url 'staff_queries' %}" class="{% if active_staff_nav == 'queries' %}active{% endif %}">Queries</a></li>
+      <li><a href="{% url 'staff_solutions' %}" class="{% if active_staff_nav == 'solutions' %}active{% endif %}">Solutions</a></li>
+      <li><a href="{% url 'staff_highlights' %}" class="{% if active_staff_nav == 'highlights' %}active{% endif %}">Highlights</a></li>
+      <li><a href="{% url 'staff_feedback' %}" class="{% if active_staff_nav == 'feedback' %}active{% endif %}">Feedback</a></li>
+      <li><a href="{% url 'staff_articles' %}" class="{% if active_staff_nav == 'articles' %}active{% endif %}">Articles</a></li>
+      <li><a href="{% url 'staff_photos' %}" class="{% if active_staff_nav == 'photos' %}active{% endif %}">Photos</a></li>
+      <li><a href="{% url 'staff_events' %}" class="{% if active_staff_nav == 'events' %}active{% endif %}">Events</a></li>
+      <li><a href="{% url 'home' %}">Public Website</a></li>
+      <li><a href="{% url 'admin:index' %}">Django Admin</a></li>
+    </ul>
+    <div class="dashboard-user">
+      <p>Signed in as</p>
+      <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+      <a href="{% url 'staff_logout' %}" class="btn btn--outline btn--sm">Logout</a>
+    </div>
+  </aside>
+  <main class="dashboard-main">
+    {% if messages %}
+      <div class="staff-messages" role="alert" aria-live="polite">
+        {% for message in messages %}
+          <div class="alert alert--{{ message.tags|default:'info' }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block staff_content %}{% endblock %}
+  </main>
+</div>
+{% block chartjs %}{% endblock %}
+<script src="{% static 'core/js/main.js' %}"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

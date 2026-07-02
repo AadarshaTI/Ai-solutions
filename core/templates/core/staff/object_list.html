@@ -1,0 +1,38 @@
+{% extends "core/staff/base_staff.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block staff_content %}
+<div class="dashboard-topbar">
+  <div><p class="section-label">CRM</p><h1>{{ title }}</h1><p class="text-muted">{{ description }}</p></div>
+  <div class="dashboard-actions"><a href="{% url create_url %}" class="btn btn--primary btn--sm">Add New</a></div>
+</div>
+<section class="dashboard-panel">
+  {% if rows %}
+  <div class="table-wrap">
+    <table class="inquiry-table">
+      <thead><tr>{% for column in columns %}<th>{{ column }}</th>{% endfor %}<th>Actions</th></tr></thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          {% for cell in row.cells %}
+          <td>
+            {% if cell == 'Published' or cell == 'Featured' or cell == 'Approved' %}
+              <span class="badge badge--read">{{ cell }}</span>
+            {% elif cell == 'Draft' or cell == 'Pending' or cell == 'Standard' %}
+              <span class="badge badge--new">{{ cell }}</span>
+            {% else %}
+              {{ cell }}
+            {% endif %}
+          </td>
+          {% endfor %}
+          <td class="staff-table-actions"><a href="{% url edit_url row.object.pk %}" class="text-link">Edit</a><a href="{% url delete_url row.object.pk %}" class="text-link text-link--danger">Delete</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty-state">No records yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

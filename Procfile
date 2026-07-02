@@ -1,0 +1,1 @@
+web: gunicorn ai_solution.wsgi:application

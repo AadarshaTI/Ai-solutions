@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+{% block title %}Contact{% endblock %}
+{% block meta_description %}Contact AI Solutions to discuss a workplace service or request workflow project.{% endblock %}
+
+{% block content %}
+<header class="page-hero">
+  <div class="container page-hero__inner">
+    <p class="section-label">Contact</p>
+    <h1 class="page-hero__title">Tell us what needs fixing</h1>
+    <p class="page-hero__subtitle">Describe the current process and we will respond within one business day.</p>
+  </div>
+</header>
+<section class="section">
+  <div class="container contact-section">
+    <aside class="contact-aside">
+      <h2>AI Solutions Ltd</h2>
+      <p>Sunderland Software City<br>SR1 3HA, Sunderland, UK</p>
+      <p><a href="mailto:hello@ai-solutions.co.uk">hello@ai-solutions.co.uk</a><br><a href="tel:+441910000000">+44 191 000 0000</a></p>
+      <p>Monday to Friday<br>08:00 to 18:00 GMT</p>
+      <div class="contact-steps">
+        <h3>What happens next</h3>
+        <ol>
+          <li>We read your query.</li>
+          <li>A member of the team calls to understand the process.</li>
+          <li>We show a suitable approach and clear pricing.</li>
+        </ol>
+      </div>
+    </aside>
+    <div class="form-panel">
+      <h2>Send a query</h2>
+      <form method="post" action="{% url 'contact' %}" novalidate>
+        {% csrf_token %}
+        <div class="form-grid">
+          {% for field in form %}
+          <div class="form-group {% if field.name == 'job_details' %}form-group--full{% endif %}">
+            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<span class="form-error" role="alert">{{ field.errors.0 }}</span>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        <p class="form-note">Your details are used only to respond to this query.</p>
+        <button type="submit" class="btn btn--primary btn--lg">Send query</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

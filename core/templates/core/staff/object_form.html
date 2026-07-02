@@ -1,0 +1,26 @@
+{% extends "core/staff/base_staff.html" %}
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block staff_content %}
+<div class="dashboard-topbar">
+  <div><p class="section-label">CRM</p><h1>{{ form_title }}</h1><p class="text-muted">{{ description }}</p></div>
+  <div class="dashboard-actions"><a href="{% url list_url %}" class="btn btn--outline btn--sm">Back to {{ title }}</a></div>
+</div>
+<section class="dashboard-panel staff-form-panel">
+  <form method="post" enctype="{% if form.is_multipart %}multipart/form-data{% else %}application/x-www-form-urlencoded{% endif %}" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert alert--error">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="staff-form-grid">
+      {% for field in form %}
+      <div class="form-group {% if field.field.widget.input_type == 'checkbox' %}form-group--checkbox{% endif %}">
+        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<small class="form-help">{{ field.help_text }}</small>{% endif %}
+        {% for error in field.errors %}<span class="form-error">{{ error }}</span>{% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+    <div class="staff-form-actions"><button type="submit" class="btn btn--primary">{{ submit_label }}</button><a href="{% url list_url %}" class="btn btn--outline">Cancel</a></div>
+  </form>
+</section>
+{% endblock %}

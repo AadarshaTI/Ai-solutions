@@ -1,0 +1,43 @@
+{% extends "core/base.html" %}
+{% block title %}Solutions{% endblock %}
+{% block meta_description %}AI Solutions services for workplace requests, workflow routing, staff support and operational reporting.{% endblock %}
+
+{% block content %}
+<header class="page-hero">
+  <div class="container page-hero__inner">
+    <p class="section-label">Solutions</p>
+    <h1 class="page-hero__title">Software that supports working teams</h1>
+    <p class="page-hero__subtitle">Choose a single service or combine them into a joined-up request and reporting system.</p>
+  </div>
+</header>
+<section class="section">
+  <div class="container">
+    <div class="grid-3 service-grid">
+      {% if solutions %}
+        {% for solution in solutions %}
+        <article class="card" id="solution-{{ solution.pk }}">
+          <span class="card__number">{% if solution.is_featured %}Core solution{% else %}Supporting solution{% endif %}</span>
+          <h2 class="card__title">{{ solution.title }}</h2>
+          <p class="card__body">{{ solution.description }}</p>
+          <ul class="feature-list">{% for feature in solution.feature_list %}<li>{{ feature }}</li>{% endfor %}</ul>
+          <a href="{% url 'contact' %}" class="text-link">Discuss this service</a>
+        </article>
+        {% endfor %}
+      {% else %}
+        <article class="card"><span class="card__number">Core solution</span><h2 class="card__title">Staff help desk</h2><p class="card__body">Handle recurring staff questions and requests through a simple, trackable service channel.</p><ul class="feature-list"><li>Web and Teams access</li><li>Clear team handoff</li><li>Knowledge library</li></ul><a href="{% url 'contact' %}" class="text-link">Discuss this service</a></article>
+        <article class="card"><span class="card__number">Core solution</span><h2 class="card__title">Request workflows</h2><p class="card__body">Connect routine approvals and task sequences so nothing is left in an inbox.</p><ul class="feature-list"><li>Approval steps</li><li>Audit history</li><li>Notifications</li></ul><a href="{% url 'contact' %}" class="text-link">Discuss this service</a></article>
+        <article class="card"><span class="card__number">Core solution</span><h2 class="card__title">People services</h2><p class="card__body">Support leave, payroll questions and onboarding tasks in one familiar place.</p><ul class="feature-list"><li>Leave and absence</li><li>Starter checklists</li><li>Policy access</li></ul><a href="{% url 'contact' %}" class="text-link">Discuss this service</a></article>
+        <article class="card"><span class="card__number">Supporting solution</span><h2 class="card__title">Reporting</h2><p class="card__body">Review volume, completion time and the recurring issues affecting teams.</p><ul class="feature-list"><li>Daily reporting</li><li>Exports</li><li>Access controls</li></ul><a href="{% url 'contact' %}" class="text-link">Discuss this service</a></article>
+        <article class="card"><span class="card__number">Supporting solution</span><h2 class="card__title">System connections</h2><p class="card__body">Pass information between the business tools already used by your organisation.</p><ul class="feature-list"><li>Microsoft 365</li><li>ServiceNow</li><li>REST endpoints</li></ul><a href="{% url 'contact' %}" class="text-link">Discuss this service</a></article>
+        <article class="card"><span class="card__number">Supporting solution</span><h2 class="card__title">Security controls</h2><p class="card__body">Maintain appropriate access, records and data handling for internal services.</p><ul class="feature-list"><li>Role access</li><li>Audit trail</li><li>Data residency options</li></ul><a href="{% url 'contact' %}" class="text-link">Discuss this service</a></article>
+      {% endif %}
+    </div>
+  </div>
+</section>
+<section class="band">
+  <div class="container band__inner">
+    <div><p class="section-label">Connections</p><h2>Built around your existing tools</h2><p>Microsoft 365, Azure AD, Salesforce, ServiceNow, SAP, Workday, Slack and Jira.</p></div>
+    <a href="{% url 'contact' %}" class="btn btn--primary">Plan an integration</a>
+  </div>
+</section>
+{% endblock %}

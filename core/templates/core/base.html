@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% block meta_description %}AI Solutions builds practical workplace service tools for busy operations teams.{% endblock %}">
+  <title>{% block title %}AI Solutions{% endblock %} | Workplace Services</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'core/css/main.css' %}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232f4639'/><path d='M7 10h18v3H7zm0 6h13v3H7zm0 6h18v3H7z' fill='%23f3efe5'/></svg>">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+{% if request.resolver_match.url_name != 'dashboard' and request.resolver_match.url_name != 'staff_login' %}
+<nav class="navbar" aria-label="Main navigation">
+  <div class="navbar__inner">
+    <a href="{% url 'home' %}" class="navbar__logo" aria-label="AI Solutions home">
+      <span class="navbar__logo-icon" aria-hidden="true">AS</span>
+      <span>AI Solutions</span>
+    </a>
+    <ul class="navbar__nav" id="main-nav">
+      <li><a href="{% url 'solutions' %}">Solutions</a></li>
+      <li><a href="{% url 'case_studies' %}">Highlights</a></li>
+      <li><a href="{% url 'feedback' %}">Feedback</a></li>
+      <li><a href="{% url 'knowledge_hub' %}">Articles</a></li>
+      <li><a href="{% url 'gallery' %}">Events</a></li>
+    </ul>
+    <div class="navbar__cta">
+      <a href="{% url 'contact' %}" class="btn btn--primary btn--sm">Contact Us</a>
+      <button class="navbar__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+{% endif %}
+
+{% if messages and request.resolver_match.url_name != 'staff_login' %}
+  <div class="messages-container" role="alert" aria-live="polite">
+    {% for message in messages %}
+      <div class="alert alert--{{ message.tags|default:'info' }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<main id="main-content">
+  {% csrf_token %}
+  {% block content %}{% endblock %}
+</main>
+
+{% if request.resolver_match.url_name != 'dashboard' and request.resolver_match.url_name != 'staff_login' %}
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a href="{% url 'home' %}" class="navbar__logo">
+          <span class="navbar__logo-icon" aria-hidden="true">AS</span>
+          <span>AI Solutions</span>
+        </a>
+        <p>Workplace service software designed in Sunderland for teams that need requests handled clearly and quickly.</p>
+      </div>
+      <div>
+        <p class="footer__heading">Services</p>
+        <ul class="footer__links">
+          <li><a href="{% url 'solutions' %}">Service desk</a></li>
+          <li><a href="{% url 'solutions' %}">Request workflows</a></li>
+          <li><a href="{% url 'solutions' %}">People services</a></li>
+          <li><a href="{% url 'solutions' %}">Reporting</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__heading">Company</p>
+        <ul class="footer__links">
+          <li><a href="{% url 'case_studies' %}">Highlights</a></li>
+          <li><a href="{% url 'feedback' %}">Feedback</a></li>
+          <li><a href="{% url 'knowledge_hub' %}">Articles</a></li>
+          <li><a href="{% url 'gallery' %}">Events</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__heading">Office</p>
+        <ul class="footer__links">
+          <li>Sunderland, SR1, UK</li>
+          <li><a href="mailto:hello@ai-solutions.co.uk">hello@ai-solutions.co.uk</a></li>
+          <li><a href="tel:+441910000000">+44 191 000 0000</a></li>
+          <li>Monday to Friday, 08:00 to 18:00</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; {% now "Y" %} AI Solutions Ltd. Registered in England and Wales.</p>
+      <div class="footer__links-inline">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="{% url 'staff_login' %}">Staff</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="chatbot-trigger" role="complementary" aria-label="Help desk messaging">
+  <button class="chatbot-fab" id="chatbot-fab" aria-label="Open help desk" aria-expanded="false" aria-controls="chatbot-window">
+    Help
+    <span class="chatbot-fab__badge" aria-label="New message"></span>
+  </button>
+  <div class="chatbot-window" id="chatbot-window" role="dialog" aria-label="Message the help desk" aria-modal="false">
+    <div class="chatbot-header">
+      <div class="chatbot-avatar" aria-hidden="true">A</div>
+      <div class="chatbot-header__info">
+        <p class="chatbot-header__name">AI assistant</p>
+        <p class="chatbot-header__status">AI Solutions help desk</p>
+      </div>
+      <button class="chatbot-close" id="chatbot-close" aria-label="Close chat">Close</button>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages" role="log" aria-live="polite" aria-label="Messages">
+      <div class="chatbot-msg chatbot-msg--bot">
+        Hello, I am AI assistant. I can answer questions about services, website AI assistants, pricing and arranging a call.
+      </div>
+    </div>
+    <div class="chatbot-quick-replies" aria-label="Suggested questions">
+      <button class="quick-reply" data-msg="What solutions do you offer?">Services</button>
+      <button class="quick-reply" data-msg="How does the platform work?">How it works</button>
+      <button class="quick-reply" data-msg="What is the pricing?">Pricing</button>
+    </div>
+    <div class="chatbot-input-area">
+      <label for="chatbot-input" class="sr-only">Type your message</label>
+      <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Write a question" autocomplete="off" maxlength="500">
+      <button class="chatbot-send" id="chatbot-send" aria-label="Send message">Send</button>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% block chartjs %}{% endblock %}
+<script src="{% static 'core/js/main.js' %}"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

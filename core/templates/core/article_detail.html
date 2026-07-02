@@ -1,0 +1,34 @@
+{% extends "core/base.html" %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block meta_description %}{{ article.excerpt }}{% endblock %}
+
+{% block content %}
+<header class="article-hero">
+  <div class="container article-container">
+    <p class="article-meta">{{ article.get_category_display }} / {{ article.published_at|date:"d F Y" }} / {{ article.read_time_min }} min read / {{ article.author }}</p>
+    <h1>{{ article.title }}</h1>
+    <p class="article-lede">{{ article.excerpt }}</p>
+  </div>
+</header>
+<section class="section">
+  <div class="container article-layout">
+    <article class="article-body">
+      {% if article.cover_image %}<img class="article-cover" src="{{ article.cover_image.url }}" alt="{{ article.title }}">{% endif %}
+      {{ article.body|safe }}
+      <div class="article-actions">
+        <span>Share</span>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ article.title|urlencode }}" target="_blank" rel="noopener">X</a>
+        <a class="text-link article-actions__back" href="{% url 'knowledge_hub' %}">Back to journal</a>
+      </div>
+    </article>
+    <aside class="article-side">
+      <div class="aside-panel"><h2>Discuss your process</h2><p>Tell our delivery team where work is getting stuck.</p><a href="{% url 'contact' %}" class="btn btn--primary btn--sm">Arrange a call</a></div>
+      {% if related %}
+      <p class="section-label">Related notes</p>
+      {% for rel in related %}<a href="{{ rel.get_absolute_url }}" class="related-card"><span>{{ rel.get_category_display }}</span><strong>{{ rel.title }}</strong></a>{% endfor %}
+      {% endif %}
+    </aside>
+  </div>
+</section>
+{% endblock %}

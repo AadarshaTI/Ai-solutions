@@ -1,0 +1,133 @@
+{% extends "core/base.html" %}
+{% block title %}AI Solutions{% endblock %}
+{% block meta_description %}AI Solutions helps organisations handle staff requests, service workflows and reporting in one dependable workplace platform.{% endblock %}
+
+{% block content %}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__inner">
+    <div class="hero__copy">
+      <p class="hero__eyebrow">Workplace services, Sunderland</p>
+      <h1 class="hero__title" id="hero-title">Keep everyday requests moving.</h1>
+      <p class="hero__subtitle">AI Solutions gives operations, IT and people teams a straightforward place to receive requests, route work and keep staff informed.</p>
+      <div class="hero__actions">
+        <a href="{% url 'contact' %}" class="btn btn--primary btn--lg">Arrange a conversation</a>
+        <a href="{% url 'solutions' %}" class="btn btn--outline btn--lg">View services</a>
+      </div>
+    </div>
+    <div class="hero__visual" aria-label="Example request">
+      <div class="hero__card">
+        <p class="hero__card-title">Open request / Building access</p>
+        <dl class="request-preview">
+          <div><dt>From</dt><dd>Facilities, North office</dd></div>
+          <div><dt>Request</dt><dd>New starter pass required for Monday</dd></div>
+          <div><dt>Assigned to</dt><dd>Workplace support</dd></div>
+          <div><dt>Status</dt><dd><span class="status-tag">In progress</span></dd></div>
+        </dl>
+        <div class="hero__stats">
+          <div class="hero__stat"><span class="hero__stat-value">{{ stats.clients }}</span><span class="hero__stat-label">sectors shown</span></div>
+          <div class="hero__stat"><span class="hero__stat-value">{{ stats.uptime }}</span><span class="hero__stat-label">reply target</span></div>
+          <div class="hero__stat"><span class="hero__stat-value">{{ stats.savings }}</span><span class="hero__stat-label">reporting view</span></div>
+          <div class="hero__stat"><span class="hero__stat-value">{{ stats.nps }}</span><span class="hero__stat-label">delivery team</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="trust-strip">
+  <div class="container">
+    <p class="section-label">Working across health, retail, finance and distribution</p>
+    <div class="client-list" aria-label="Client sectors">
+      <span>Northshore Health</span><span>Field &amp; Found</span><span>Tyne Ledger</span><span>Portline Distribution</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="solutions-heading">
+  <div class="container">
+    <div class="section-header section-header--left">
+      <p class="section-label">Solutions</p>
+      <h2 class="section-title" id="solutions-heading">Tools for the work that repeats every day</h2>
+      <p class="section-subtitle">Gather requests, route approvals and report on demand without making staff learn a complicated system.</p>
+    </div>
+    <div class="grid-3">
+      {% if featured_solutions %}
+        {% for solution in featured_solutions %}
+          <article class="card reveal">
+            <span class="card__number">0{{ forloop.counter }}</span>
+            <h3 class="card__title">{{ solution.title }}</h3>
+            <p class="card__body">{{ solution.summary }}</p>
+            <ul class="feature-list">
+              {% for feature in solution.feature_list|slice:":3" %}<li>{{ feature }}</li>{% endfor %}
+            </ul>
+          </article>
+        {% endfor %}
+      {% else %}
+        <article class="card"><span class="card__number">01</span><h3 class="card__title">Staff help desk</h3><p class="card__body">A single front door for IT, HR and workplace questions, with a clear handover to the right team.</p><ul class="feature-list"><li>Request capture</li><li>Knowledge articles</li><li>Team handover</li></ul></article>
+        <article class="card"><span class="card__number">02</span><h3 class="card__title">Request workflows</h3><p class="card__body">Route approvals and recurring processes through the systems your team already uses.</p><ul class="feature-list"><li>Approvals</li><li>Audit history</li><li>System connections</li></ul></article>
+        <article class="card"><span class="card__number">03</span><h3 class="card__title">People services</h3><p class="card__body">Give staff a direct way to manage leave, policies and onboarding requests.</p><ul class="feature-list"><li>Leave requests</li><li>New starter tasks</li><li>Policy library</li></ul></article>
+      {% endif %}
+    </div>
+    <p class="section-link"><a href="{% url 'solutions' %}">See all solutions</a></p>
+  </div>
+</section>
+
+<section id="customer-feedback" class="section section--alt" aria-labelledby="testimonials-heading">
+  <div class="container">
+    <div class="section-header section-header--left">
+      <p class="section-label">Feedback</p>
+      <h2 class="section-title" id="testimonials-heading">Measured in hours saved and tickets cleared</h2>
+    </div>
+    <div class="grid-3">
+      {% if testimonials %}
+        {% for t in testimonials %}
+        <article class="testimonial-card">
+          <p class="testimonial-card__rating" aria-label="{{ t.rating }} out of 5 stars">
+            {% for _ in t.star_range %}<span aria-hidden="true">&#9733;</span>{% endfor %}
+            {% for _ in t.empty_star_range %}<span aria-hidden="true">&#9734;</span>{% endfor %}
+          </p>
+          <blockquote class="testimonial-card__quote">{{ t.quote }}</blockquote>
+          <p class="testimonial-card__name">{{ t.author_name }}</p>
+          <p class="testimonial-card__role">{{ t.author_title }}</p>
+        </article>
+        {% endfor %}
+      {% else %}
+        <article class="testimonial-card"><p class="testimonial-card__rating" aria-label="5 out of 5 stars"><span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span></p><blockquote class="testimonial-card__quote">"Our IT team now spends far less time on password and access queries. Staff know exactly where their request stands."</blockquote><p class="testimonial-card__name">Helen Ward</p><p class="testimonial-card__role">Service Manager, Northshore Health</p></article>
+        <article class="testimonial-card"><p class="testimonial-card__rating" aria-label="5 out of 5 stars"><span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span></p><blockquote class="testimonial-card__quote">"The rollout was calm and practical. Store colleagues adopted the new request process in the first fortnight."</blockquote><p class="testimonial-card__name">Malcolm Reed</p><p class="testimonial-card__role">Operations Director, Field &amp; Found</p></article>
+        <article class="testimonial-card"><p class="testimonial-card__rating" aria-label="5 out of 5 stars"><span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span></p><blockquote class="testimonial-card__quote">"Approval history is now visible in one place, which has made onboarding considerably easier to manage."</blockquote><p class="testimonial-card__name">Anita Rowe</p><p class="testimonial-card__role">People Lead, Tyne Ledger</p></article>
+      {% endif %}
+    </div>
+    <p class="section-link"><a href="{% url 'feedback' %}">See all feedback</a></p>
+  </div>
+</section>
+
+{% if latest_articles %}
+<section class="section" aria-labelledby="journal-heading">
+  <div class="container">
+    <div class="section-header section-header--left">
+      <p class="section-label">Articles</p>
+      <h2 class="section-title" id="journal-heading">Notes from our delivery team</h2>
+    </div>
+    <div class="grid-3">
+      {% for article in latest_articles %}
+      <article class="article-card">
+        <div class="article-card__content">
+          <p class="article-card__meta">{{ article.get_category_display }} / {{ article.read_time_min }} min read</p>
+          <h3 class="article-card__title">{{ article.title }}</h3>
+          <p class="article-card__excerpt">{{ article.excerpt }}</p>
+          <a href="{{ article.get_absolute_url }}" class="text-link">Read note</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="closing-panel" aria-labelledby="cta-heading">
+  <div class="container closing-panel__inner">
+    <div><p class="section-label">Start with one process</p><h2 id="cta-heading">Bring us the work that slows your team down.</h2></div>
+    <a href="{% url 'contact' %}" class="btn btn--primary btn--lg">Talk to AI Solutions</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}
+{% block title %}Articles{% endblock %}
+{% block meta_description %}AI Solutions notes on service delivery, workflow improvement and workplace operations.{% endblock %}
+
+{% block content %}
+<header class="page-hero">
+  <div class="container page-hero__inner">
+    <p class="section-label">Articles</p>
+    <h1 class="page-hero__title">Notes for service teams</h1>
+    <p class="page-hero__subtitle">Delivery notes, practical guides and company updates.</p>
+  </div>
+</header>
+<section class="section">
+  <div class="container">
+    <nav class="category-pills" aria-label="Filter articles by category">
+      <a href="{% url 'knowledge_hub' %}" class="category-pill {% if not active_category %}category-pill--active{% endif %}">All</a>
+      {% for value, label in categories %}<a href="{% url 'knowledge_hub' %}?category={{ value }}" class="category-pill {% if active_category == value %}category-pill--active{% endif %}">{{ label }}</a>{% endfor %}
+    </nav>
+    <div class="grid-3">
+      {% if articles %}
+        {% for article in articles %}
+        <article class="article-card">
+          <div class="article-card__content">
+            <p class="article-card__meta">{{ article.get_category_display }} / {{ article.published_at|date:"d M Y" }} / {{ article.read_time_min }} min</p>
+            <h2 class="article-card__title">{{ article.title }}</h2>
+            <p class="article-card__excerpt">{{ article.excerpt }}</p>
+            <a href="{{ article.get_absolute_url }}" class="text-link">Read note</a>
+          </div>
+        </article>
+        {% endfor %}
+      {% else %}
+        <article class="article-card"><div class="article-card__content"><p class="article-card__meta">Practice / 6 min</p><h2 class="article-card__title">Finding the hidden cost of routine requests</h2><p class="article-card__excerpt">A straightforward way to measure repeated service work before changing a process.</p><a href="#" class="text-link">Read note</a></div></article>
+        <article class="article-card"><div class="article-card__content"><p class="article-card__meta">Guide / 8 min</p><h2 class="article-card__title">Starting with one service workflow</h2><p class="article-card__excerpt">How to choose a useful first process, map ownership and run a manageable pilot.</p><a href="#" class="text-link">Read note</a></div></article>
+        <article class="article-card"><div class="article-card__content"><p class="article-card__meta">Company news / 3 min</p><h2 class="article-card__title">AI Solutions publishes its service security controls</h2><p class="article-card__excerpt">An update on access management, audit history and information handling.</p><a href="#" class="text-link">Read note</a></div></article>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

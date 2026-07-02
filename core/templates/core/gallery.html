@@ -1,0 +1,68 @@
+{% extends "core/base.html" %}
+{% block title %}Events{% endblock %}
+{% block meta_description %}Workshops, meet-ups and delivery sessions hosted by AI Solutions in Sunderland and across the UK.{% endblock %}
+
+{% block content %}
+<header class="page-hero">
+  <div class="container page-hero__inner">
+    <p class="section-label">Events</p>
+    <h1 class="page-hero__title">Meet the team</h1>
+    <p class="page-hero__subtitle">Small working sessions and public events for operations and service leads.</p>
+  </div>
+</header>
+<section class="section">
+  <div class="container">
+    <div class="section-header section-header--left"><p class="section-label">Coming up</p><h2 class="section-title">Upcoming sessions</h2></div>
+    {% if upcoming_events %}
+    <div class="event-list">
+      {% for event in upcoming_events %}
+      <article class="event-card">
+        <p class="section-label">{{ event.get_event_type_display }}</p>
+        <h3>{{ event.title }}</h3>
+        <p>{{ event.event_date|date:"d M Y" }}{% if event.location %} / {{ event.location }}{% endif %}</p>
+        {% if event.description %}<p>{{ event.description }}</p>{% endif %}
+        <a href="{% url 'contact' %}" class="text-link">{{ event.registration_label }}</a>
+      </article>
+      {% endfor %}
+    </div>
+    {% elif upcoming_images %}
+    <div class="event-list">
+      {% for img in upcoming_images %}
+      <article class="event-card">
+        <p class="section-label">{{ img.get_event_type_display }}</p>
+        <h3>{{ img.title }}</h3>
+        <p>{{ img.event_date|date:"d M Y" }}{% if img.location %} / {{ img.location }}{% endif %}</p>
+        {% if img.description %}<p>{{ img.description }}</p>{% endif %}
+        <a href="{% url 'contact' %}" class="text-link">Register interest</a>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="event-list">
+      <article class="event-card"><p class="section-label">Workshop</p><h3>Making service requests easier to track</h3><p>Sunderland Software City / Autumn programme</p><a href="{% url 'contact' %}" class="text-link">Register interest</a></article>
+      <article class="event-card"><p class="section-label">Roundtable</p><h3>Reducing HR administration for growing teams</h3><p>Manchester / Winter programme</p><a href="{% url 'contact' %}" class="text-link">Register interest</a></article>
+      <article class="event-card"><p class="section-label">Open studio</p><h3>Inside a workplace service rollout</h3><p>Sunderland / Dates announced soon</p><a href="{% url 'contact' %}" class="text-link">Register interest</a></article>
+    </div>
+    {% endif %}
+  </div>
+</section>
+<section class="section section--alt">
+  <div class="container">
+    <div class="section-header section-header--left"><p class="section-label">Archive</p><h2 class="section-title">Previous events</h2></div>
+    {% if past_images %}
+    <div class="gallery-grid">
+      {% for img in past_images %}
+      <div class="gallery-item" role="button" tabindex="0" aria-label="Open image: {{ img.title }}">
+        <img src="{{ img.image.url }}" alt="{{ img.title }}" loading="lazy">
+        <span class="gallery-item__badge">{{ img.get_event_type_display }}</span>
+        <div class="gallery-item__overlay"><h3>{{ img.title }}</h3><p>{{ img.event_date|date:"d M Y" }}{% if img.location %} / {{ img.location }}{% endif %}</p></div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="archive-note"><p>Photographs and session notes will appear here after each event.</p></div>
+    {% endif %}
+  </div>
+</section>
+<section class="closing-panel"><div class="container closing-panel__inner"><h2>Arrange a private working session</h2><a href="{% url 'contact' %}" class="btn btn--primary">Contact the team</a></div></section>
+{% endblock %}
