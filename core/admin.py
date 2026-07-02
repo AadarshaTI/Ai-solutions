@@ -67,6 +67,7 @@ class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     list_editable  = ('is_published',)
     readonly_fields = ('published_at', 'updated_at')
+    exclude = ('cover_image',)
 
 
 # ── Gallery ───────────────────────────────────
