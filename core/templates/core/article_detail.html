@@ -13,7 +13,6 @@
 <section class="section">
   <div class="container article-layout">
     <article class="article-body">
-      {% if article.cover_image %}<img class="article-cover" src="{{ article.cover_image.url }}" alt="{{ article.title }}">{% endif %}
       {{ article.body|safe }}
       <div class="article-actions">
         <span>Share</span>

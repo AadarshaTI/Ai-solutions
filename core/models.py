@@ -179,7 +179,6 @@ class Article(models.Model):
     category      = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='insight')
     excerpt       = models.CharField(max_length=320, help_text="Short preview shown in card")
     body          = models.TextField(help_text="Full article content (HTML allowed)")
-    cover_image   = models.ImageField(upload_to='articles/', blank=True, null=True)
     author        = models.CharField(max_length=120, default='AI Solutions Team')
     is_published  = models.BooleanField(default=True)
     published_at  = models.DateTimeField(auto_now_add=True)

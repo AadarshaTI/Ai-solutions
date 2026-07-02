@@ -130,7 +130,7 @@ class ArticleForm(StaffModelForm):
     class Meta:
         model = Article
         fields = [
-            'title', 'slug', 'category', 'excerpt', 'body', 'cover_image',
+            'title', 'slug', 'category', 'excerpt', 'body',
             'author', 'is_published', 'read_time_min',
         ]
 
