@@ -247,6 +247,7 @@ class PromotionalEvent(models.Model):
     event_date = models.DateField()
     location = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='events/', blank=True, null=True)
     is_published = models.BooleanField(default=True)
     registration_label = models.CharField(max_length=80, default='Register interest')
     created_at = models.DateTimeField(auto_now_add=True)

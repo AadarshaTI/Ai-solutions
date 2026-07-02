@@ -17,6 +17,7 @@
     <div class="event-list">
       {% for event in upcoming_events %}
       <article class="event-card">
+        {% if event.image %}<img class="event-card__image" src="{{ event.image.url }}" alt="{{ event.title }}" loading="lazy">{% endif %}
         <p class="section-label">{{ event.get_event_type_display }}</p>
         <h3>{{ event.title }}</h3>
         <p>{{ event.event_date|date:"d M Y" }}{% if event.location %} / {{ event.location }}{% endif %}</p>

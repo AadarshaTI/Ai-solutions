@@ -179,7 +179,7 @@ class PromotionalEventForm(StaffModelForm):
         model = PromotionalEvent
         fields = [
             'title', 'event_type', 'event_date', 'location', 'description',
-            'is_published', 'registration_label',
+            'image', 'is_published', 'registration_label',
         ]
         widgets = {
             'event_date': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
