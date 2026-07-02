@@ -11,7 +11,7 @@ env/
 # Django/local runtime
 *.log
 db.sqlite3
-staticfiles/
+# staticfiles/ is committed so Vercel can serve static assets (WhiteNoise manifest)
 
 # Environment secrets
 .env
